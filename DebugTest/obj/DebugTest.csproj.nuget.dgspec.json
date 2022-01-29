@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admah\\Documents\\TestProject\\TestProject\\DebugTest\\DebugTest.csproj": {}
+    "C:\\Users\\Admah\\Documents\\TestProject\\ChampionData\\DebugTest\\DebugTest.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admah\\Documents\\TestProject\\TestProject\\DebugTest\\DebugTest.csproj": {
+    "C:\\Users\\Admah\\Documents\\TestProject\\ChampionData\\DebugTest\\DebugTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admah\\Documents\\TestProject\\TestProject\\DebugTest\\DebugTest.csproj",
+        "projectUniqueName": "C:\\Users\\Admah\\Documents\\TestProject\\ChampionData\\DebugTest\\DebugTest.csproj",
         "projectName": "DebugTest",
-        "projectPath": "C:\\Users\\Admah\\Documents\\TestProject\\TestProject\\DebugTest\\DebugTest.csproj",
+        "projectPath": "C:\\Users\\Admah\\Documents\\TestProject\\ChampionData\\DebugTest\\DebugTest.csproj",
         "packagesPath": "C:\\Users\\Admah\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admah\\Documents\\TestProject\\TestProject\\DebugTest\\obj\\",
+        "outputPath": "C:\\Users\\Admah\\Documents\\TestProject\\ChampionData\\DebugTest\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admah\\AppData\\Roaming\\NuGet\\NuGet.Config",
