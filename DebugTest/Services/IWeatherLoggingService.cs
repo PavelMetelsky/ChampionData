@@ -1,9 +1,11 @@
+using System.Threading;
+using System.Threading.Tasks;
 using DebugTest.Models;
 
 namespace DebugTest
 {
     public interface IWeatherLoggingService
     {
-        void WriteToFile(string location, WeatherInfo weatherInfo);
+        Task WriteToFile(string location, WeatherInfo weatherInfo);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 using DebugTest.Models;
 
 namespace DebugTest
@@ -20,12 +21,12 @@ namespace DebugTest
             _weatherFileConfiguration = weatherFileConfiguration;
         }
 
-        public void WriteToFile(string location, WeatherInfo weatherInfo)
+        public async Task WriteToFile(string location, WeatherInfo weatherInfo)
         {
-            var path = String.Format(FILE_NAME_TEMPLATE, location, GetTimeForFileName());
-            
-            using StreamWriter streamWriter = new StreamWriter(Path.Combine(_weatherFileConfiguration.FolderPath, path), true);
-            streamWriter.WriteLine(JsonSerializer.Serialize<WeatherInfo>(weatherInfo));
+            var path = string.Format(FILE_NAME_TEMPLATE, location, GetTimeForFileName());
+
+            await using var streamWriter = new StreamWriter(Path.Combine(_weatherFileConfiguration.FolderPath, path), true);
+            await streamWriter.WriteLineAsync(JsonSerializer.Serialize(weatherInfo));
         }
         
         public string GetTimeForFileName()

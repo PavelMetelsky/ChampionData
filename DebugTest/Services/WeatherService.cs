@@ -35,7 +35,7 @@ namespace DebugTest
         {
             Print("Enter location:");
             var locationQuery = Console.ReadLine();
-            var location = await GetLocation(locationQuery);
+            var location = await GetLocation(locationQuery, cancellationToken);
 
             if (location == null)
                 throw new ArgumentException("Invalid location");
@@ -47,7 +47,7 @@ namespace DebugTest
                 Interval = _weatherFileConfiguration.TimerInterval,
                 AutoReset = true,
             };
-            _timer.Elapsed += async (sender, e) => await OnTimedEvent(sender, e, location);
+            _timer.Elapsed += async (sender, e) => await OnTimedEvent(sender, e, location, cancellationToken);
             _timer.Start();
         }
 
@@ -59,21 +59,20 @@ namespace DebugTest
             return Task.CompletedTask;
         }
 
-        private async Task<Location> GetLocation(string locationQuery)
+        private async Task<Location> GetLocation(string locationQuery, CancellationToken cancellationToken)
         {
-            var content = locationQuery.Contains(".")
-                ? _weatherHttpClient.SearchLocationsByCoordinates(locationQuery)
-                : _weatherHttpClient.SearchLocationsByName(locationQuery);
+            var locationsTask = locationQuery.Contains(".")
+                ? _weatherHttpClient.SearchLocationsByCoordinates(locationQuery, cancellationToken)
+                : _weatherHttpClient.SearchLocationsByName(locationQuery, cancellationToken);
 
-            var a = (await content);
-            return a?.FirstOrDefault();
+            return (await locationsTask)?.FirstOrDefault();
         }
 
-        private async Task OnTimedEvent(Object source, ElapsedEventArgs e, Location location)
+        private async Task OnTimedEvent(Object source, ElapsedEventArgs e, Location location, CancellationToken cancellationToken)
         {
             try
             {
-                var weatherInfo = await _weatherHttpClient.GetWeatherInfoByWoeId(location.woeid);
+                var weatherInfo = await _weatherHttpClient.GetWeatherInfoByWoeId(location.woeid, cancellationToken);
                 _weatherLoggingService.WriteToFile(location.title, weatherInfo);
 
                 _logger.LogInformation($"New weather info saved for: {weatherInfo.time}");
