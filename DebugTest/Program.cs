@@ -18,11 +18,11 @@ namespace DebugTest
                     var weatherApiConfig = hostContext.Configuration.GetSection("WeatherApi")
                         .Get<WeatherApiConfiguration>();
                     services.AddSingleton(weatherApiConfig);
+                    
                     var weatherFileConfig = hostContext.Configuration.GetSection("WeatherFile")
                         .Get<WeatherFileConfiguration>();
-                    
                     services.AddSingleton(weatherFileConfig);
-
+                    
                     services.AddHttpClient();
                     services.AddLogging(configure => configure.AddConsole());
                     services.AddTransient<IWeatherHttpClient, WeatherHttpClient>();

@@ -24,9 +24,14 @@ namespace DebugTest
         public async Task WriteToFile(string location, WeatherInfo weatherInfo)
         {
             var path = string.Format(FILE_NAME_TEMPLATE, location, GetTimeForFileName());
-
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+            
             await using var streamWriter = new StreamWriter(Path.Combine(_weatherFileConfiguration.FolderPath, path), true);
-            await streamWriter.WriteLineAsync(JsonSerializer.Serialize(weatherInfo));
+            await streamWriter.WriteLineAsync(JsonSerializer.Serialize(weatherInfo, serializeOptions));
         }
         
         public string GetTimeForFileName()

@@ -19,7 +19,6 @@ namespace DebugTest
             _configuration = configuration;
         }
 
-
         public Task<List<Location>> SearchLocationsByName(string query, CancellationToken cancellationToken)
         {
             return GetDataByUrl<List<Location>>($"{_configuration.SearchByName}{query}", cancellationToken);

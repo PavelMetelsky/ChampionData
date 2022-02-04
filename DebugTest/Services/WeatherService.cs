@@ -73,7 +73,7 @@ namespace DebugTest
             try
             {
                 var weatherInfo = await _weatherHttpClient.GetWeatherInfoByWoeId(location.woeid, cancellationToken);
-                _weatherLoggingService.WriteToFile(location.title, weatherInfo);
+                await _weatherLoggingService.WriteToFile(location.title, weatherInfo);
 
                 _logger.LogInformation($"New weather info saved for: {weatherInfo.time}");
             }
