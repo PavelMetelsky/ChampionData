@@ -1,30 +1,35 @@
-﻿using System;
-using System.Timers;
+﻿using System.Threading.Tasks;
+using DebugTest.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DebugTest
 {
     public static class Program
     {
-        private static Timer _timer;
-
-        public static void Main()
+        public static async Task Main()
         {
-            try
-            {
-                var location = WeatherService.GetLocation();
+            await new HostBuilder()
+                .ConfigureAppConfiguration((builderContext, config) => { config.AddJsonFile("appsettings.json"); })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    var weatherApiConfig = hostContext.Configuration.GetSection("WeatherApi")
+                        .Get<WeatherApiConfiguration>();
+                    services.AddSingleton(weatherApiConfig);
+                    var weatherFileConfig = hostContext.Configuration.GetSection("WeatherFile")
+                        .Get<WeatherFileConfiguration>();
+                    
+                    services.AddSingleton(weatherFileConfig);
 
-                _timer = new Timer {Interval = Constans.TimerInterval};
-                _timer.Elapsed += (sender, e) => WeatherService.OnTimedEvent(sender, e, location);
-                _timer.AutoReset = true;
-                _timer.Enabled = true;
-
-                Console.WriteLine("Press the Enter key to exit the program at any time... ");
-                Console.ReadLine();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+                    services.AddHttpClient();
+                    services.AddLogging(configure => configure.AddConsole());
+                    services.AddTransient<IWeatherHttpClient, WeatherHttpClient>();
+                    services.AddTransient<IWeatherLoggingService, WeatherLoggingService>();
+                    services.AddHostedService<WeatherService>();
+                })
+                .RunConsoleAsync();
         }
     }
 }
